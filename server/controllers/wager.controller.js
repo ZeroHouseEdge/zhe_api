@@ -1,4 +1,5 @@
 import Wager from '../models/wager';
+import { betCreated } from '../socket';
 // import cuid from 'cuid';
 // import slug from 'limax';
 import sanitizeHtml from 'sanitize-html';
@@ -25,6 +26,7 @@ export function createWager(req, res) {
       if (err) {
          res.status(500).send(err);
       }
+      betCreated(saved.author_id);
       res.json({ wager: saved });
    });
 }

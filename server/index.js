@@ -1,11 +1,13 @@
 import http from 'http';
 import express from 'express';
+import io from 'socket.io';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import config from './config';
 import db from './db';
 import middleware from './middleware';
 import api from './api';
+import * as socketjs from './socket';
 
 var app = express();
 app.server = http.createServer(app);
@@ -18,6 +20,8 @@ app.use(cors({
 app.use(bodyParser.json({
 	limit : '100kb'
 }));
+
+socketjs.main(app.server);
 
 // connect to db
 db( () => {
