@@ -30,3 +30,12 @@ export function createWager(req, res) {
       res.json({ wager: saved });
    });
 }
+
+export function acceptWager(req, res) {
+  Wager.findOneAndUpdate({ _id: req.params.id }, req.body, (err, wager) => {
+    if (err) {
+      res.status(500).send(err);
+    }
+    getOpenWagers(req, res);
+  });
+}

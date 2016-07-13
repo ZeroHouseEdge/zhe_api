@@ -28,13 +28,10 @@ const wagerSchema = new Schema({
   spread: { type: 'Number' },
   value: { type: 'Number' },
 
-  public: { type: 'Boolean', default: false },
+  public: { type: 'Boolean', default: true },
 
   script_address: { type: 'String' },
   script_hex: { type: 'String' },
-
-  away_derive_index: { type: 'Number' },
-  home_derive_index: { type: 'Number' },
 });
 
 export default mongoose.model('Wager', wagerSchema);
