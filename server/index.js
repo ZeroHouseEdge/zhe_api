@@ -21,20 +21,25 @@ app.use(bodyParser.json({
 	limit : '100kb'
 }));
 
-socketjs.main(app.server);
+socketjs.main(app.server, (socket) => {
+   socket.on('register user', (user) => {
+      console.log('register user: ', user);
+      socket.join(user);
+   });
+});
 
 // connect to db
 db( () => {
 
-	// internal middleware
-	app.use(middleware());
+   // internal middleware
+   app.use(middleware());
 
-	// api router
-	app.use('/api', api());
+   // api router
+   app.use('/api', api());
 
-	app.server.listen(config.port);
+   app.server.listen(config.port);
 
-	console.log(`Started on port ${app.server.address().port}`);
+   console.log(`Started on port ${app.server.address().port}`);
 });
 
 export default app;

@@ -1,3 +1,4 @@
+import app from '../index';
 import Wager from '../models/wager';
 import { betCreated } from '../socket';
 import { fetchWallet } from '../wallet';
@@ -26,7 +27,7 @@ export function createWager(req, res) {
       if (err) {
          res.status(500).send(err);
       }
-      betCreated(saved);
+      betCreated(app.socket, saved);
       res.json({ wager: saved });
    });
 }
