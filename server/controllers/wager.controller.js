@@ -2,6 +2,7 @@ import Wager from '../models/wager';
 import { betCreated } from '../socket';
 import { fetchWallet } from '../wallet';
 import sanitizeHtml from 'sanitize-html';
+import bitcoin from 'bitcoinjs-lib';
 
 /**
  * Save a post
@@ -25,7 +26,7 @@ export function createWager(req, res) {
       if (err) {
          res.status(500).send(err);
       }
-      betCreated(saved.author_id);
+      betCreated(saved);
       res.json({ wager: saved });
    });
 }

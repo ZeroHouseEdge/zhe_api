@@ -15,8 +15,9 @@ export function main(server) {
    });
 };
 
-export function betCreated(user) {
+export function betCreated(wager) {
    console.log('here at betCreated');
-   socketio.sockets.in(user).emit('bet created', { msg: 'yay a bet was created by a user', user: user });
+   socket.broadcast.emit('bet created', { wager: wager });
+   // socketio.emit('bet created', { wager: wager });
    console.log('emitted betCreated');
 }

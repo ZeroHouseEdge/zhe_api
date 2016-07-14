@@ -6,6 +6,7 @@
   "scripts": {
     "start": "babel-node index.js",
     "wallet": "babel-node ./server/testwallet.js",
+    "bitcoin": "babel-node ./server/bitcointest.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -15,6 +16,7 @@
   "author": "Jason Miller <jason@developit.ca>",
   "license": "UNLICENSED",
   "dependencies": {
+    "bitcoinjs-lib": "^2.2.0",
     "body-parser": "^1.13.3",
     "compression": "^1.5.2",
     "cors": "^2.7.1",
