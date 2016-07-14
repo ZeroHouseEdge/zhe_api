@@ -1,7 +1,6 @@
 import Wager from '../models/wager';
 import { betCreated } from '../socket';
-// import cuid from 'cuid';
-// import slug from 'limax';
+import { fetchWallet } from '../wallet';
 import sanitizeHtml from 'sanitize-html';
 
 /**
@@ -32,10 +31,14 @@ export function createWager(req, res) {
 }
 
 export function acceptWager(req, res) {
-  Wager.findOneAndUpdate({ _id: req.params.id }, req.body, (err, wager) => {
-    if (err) {
-      res.status(500).send(err);
-    }
-    getOpenWagers(req, res);
+  fetchWallet(['get_payout_public_key', '__bytes__']).then((results) => {
+    req.body.server_pubkey = results[0].data;
+    Wager.findOneAndUpdate({ _id: req.params.id }, req.body, (err, wager) => {
+      if (err) {
+        res.status(500).send(err);
+      }
+
+      getOpenWagers(req, res);
+    });
   });
 }
