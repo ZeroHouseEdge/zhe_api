@@ -9,8 +9,16 @@ export function main(server, done) {
    });
 }
 
-export function betCreated(socket, wager) {
+export function betCreated(wager) {
    console.log('here at betCreated');
    socketio.emit('bet created', { wager: wager });
    console.log('emitted betCreated');
 }
+
+export function betAccepted(wagers) {
+   console.log('here at betCreated');
+   socketio.emit('bet accepted', { wagers: wagers });
+   console.log('emitted betCreated');
+}
+
+

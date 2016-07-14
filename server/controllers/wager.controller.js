@@ -1,6 +1,6 @@
 import app from '../index';
 import Wager from '../models/wager';
-import { betCreated } from '../socket';
+import { betCreated, betAccepted } from '../socket';
 import { fetchWallet } from '../wallet';
 import sanitizeHtml from 'sanitize-html';
 import bitcoin from 'bitcoinjs-lib';
@@ -12,12 +12,21 @@ import bitcoin from 'bitcoinjs-lib';
  * @returns void
  */
 
-export function getOpenWagers(req, res) {
+ function openWagers(done) {
   Wager.find({ acceptor_id: null }).sort({ dateAdded: -1 }).exec((err, wagers) => {
     if (err) {
-      res.status(500).send(err);
+      return done(err, null);
     }
-    res.json({ wagers });
+    return done(null, wagers)
+  });
+ }
+
+export function getOpenWagers(req, res) {
+  openWagers((err, wagers) => {
+    if (err) {
+       res.status(500).send(err);
+    }
+    res.json({ wagers: wagers });
   });
 }
 
@@ -27,7 +36,7 @@ export function createWager(req, res) {
       if (err) {
          res.status(500).send(err);
       }
-      betCreated(app.socket, saved);
+      betCreated(saved);
       res.json({ wager: saved });
    });
 }
@@ -40,7 +49,13 @@ export function acceptWager(req, res) {
         res.status(500).send(err);
       }
 
-      getOpenWagers(req, res);
+      openWagers((err, wagers) => {
+        if (err) {
+          res.status(500).send(err);
+        }
+        betAccepted(wagers);
+        res.json({ wagers: wagers });
+      })
     });
   });
 }
