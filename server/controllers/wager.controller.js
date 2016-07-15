@@ -21,6 +21,15 @@ import bitcoin from 'bitcoinjs-lib';
   });
  }
 
+export function getUserWagers(req, res) {
+  Wager.find({ $or: [ { author_id: req.params.id }, { acceptor_id: req.params.id } ] }).sort({ dateAdded: -1 }).exec((err, wagers) => {
+    if (err) {
+       res.status(500).send(err);
+    }
+    res.json({ wagers: wagers });
+  });
+}
+
 export function getOpenWagers(req, res) {
   openWagers((err, wagers) => {
     if (err) {

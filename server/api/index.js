@@ -10,6 +10,7 @@ export default function() {
 	api.use('/facets', facets);
 
 	// mount the wagers resource
+	api.get('/:id/wagers', WagerController.getUserWagers);
 	api.get('/wagers/open', WagerController.getOpenWagers);
 	api.post('/wagers', WagerController.createWager);
 	api.put('/wagers/:id', WagerController.acceptWager);
