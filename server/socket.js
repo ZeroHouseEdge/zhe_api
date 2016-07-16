@@ -19,4 +19,9 @@ export function betAccepted(wagers) {
    console.log('emitted betAccepted');
 }
 
+export function notifyAuthor(wager) {
+   socketio.to(wager.author_id).emit('notify author', { wager: wager });
+   console.log('emitted notifyAuthor');
+}
+
 
