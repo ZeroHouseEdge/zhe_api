@@ -53,7 +53,7 @@ export function createWager(req, res) {
 export function acceptWager(req, res) {
   fetchWallet(['get_payout_public_key', '__bytes__']).then((results) => {
     req.body.server_pubkey = results[0].data;
-    Wager.findOneAndUpdate({ _id: req.params.id }, req.body, (err, wager) => {
+    Wager.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, (err, wager) => {
       if (err) {
         res.status(500).send(err);
       }
