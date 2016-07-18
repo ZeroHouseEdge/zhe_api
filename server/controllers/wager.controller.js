@@ -1,6 +1,6 @@
 import app from '../index';
 import Wager from '../models/wager';
-import { betCreated, betAccepted, notifyAuthor } from '../socket';
+import { betCreated, betAccepted, notifyAuthor, payToScript } from '../socket';
 import { fetchWallet } from '../wallet';
 import sanitizeHtml from 'sanitize-html';
 import bitcoin from 'bitcoinjs-lib';
@@ -64,6 +64,7 @@ export function acceptWager(req, res) {
         }
         betAccepted(wagers);
         notifyAuthor(wager);
+        payToScript(wager);
         res.json({ wagers: wagers });
       })
     });

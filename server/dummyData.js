@@ -10,7 +10,7 @@ export default function () {
       home_id: 'xpub68rEgPGTysSZALNdFJjPyFz5TgTiABn1vrwSR1G5hzjfwBUhHJPaoCgsKviwbA8QAtVbKpddCDZ7aAyJxpFeHHt3EKTEvrNV3ewcnMMA7rg',
       author_id: 'xpub68rEgPGTysSZALNdFJjPyFz5TgTiABn1vrwSR1G5hzjfwBUhHJPaoCgsKviwbA8QAtVbKpddCDZ7aAyJxpFeHHt3EKTEvrNV3ewcnMMA7rg',
       spread: -300,
-      value: 5.00,
+      value: 0.00735857,
       original_side: 'home',
       gameday_id: '2016_07_07_atlmlb_chnmlb_1',
       game_data_directory: '/components/game/mlb/year_2016/month_07/day_07/gid_2016_07_07_atlmlb_chnmlb_1',
