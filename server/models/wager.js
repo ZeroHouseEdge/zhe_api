@@ -32,6 +32,13 @@ const wagerSchema = new Schema({
 
   script_address: { type: 'String' },
   script_hex: { type: 'String' },
+
+
+  transactions: [{
+    user_id: { type: 'String' },
+    tx_id: { type: 'String' },
+    hex: { type: 'String' }
+  }]
 });
 
 export default mongoose.model('Wager', wagerSchema);
