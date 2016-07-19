@@ -71,7 +71,7 @@ export function acceptWager(req, res) {
         betAccepted(wagers);
         notifyAuthor(wager);
         payToScript(wager);
-        res.json({ wagers: wagers });
+        res.json({ wager: wager, wagers: wagers });
       })
     });
   });
@@ -79,11 +79,12 @@ export function acceptWager(req, res) {
 
 export function addTransaction(req, res) {
   console.log('req.body: ', req.body)
-  // Wager.findOneAndUpdate({ _id: req.params.id }, { '$push': { transactions: req.body } }, { new: true }, (err, wager) => {
-  //   if (err) {
-  //     res.status(500).send(err);
-  //   }
-
-  //   res.json({ wager: wager });
-  // })
+  Wager.findOneAndUpdate({ _id: req.params.id }, { '$push': { transactions: req.body } }, { new: true }, (err, wager) => {
+    if (err) {
+      console.log('err: ', err)
+      res.status(500).send(err);
+    }
+    console.log('wager: ', wager)
+    res.json({ wager: wager });
+  })
 }
