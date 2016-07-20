@@ -36,4 +36,12 @@ export function payToScript(wager) {
    return;
 }
 
+export function transactionAdded(wager) {
+   const bettors = [wager.author_id, wager.acceptor_id];
+   for (var i=0; i < bettors.length; i++) {
+      socketio.to(bettors[i]).emit('tx added', { wager_id: wager._id, txs: wager.transactions });
+      console.log('emitted transactionAdded: ', bettors[i]);
+   }
+}
+
 

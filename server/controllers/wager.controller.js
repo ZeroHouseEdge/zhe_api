@@ -1,6 +1,6 @@
 import app from '../index';
 import Wager from '../models/wager';
-import { betCreated, betAccepted, notifyAuthor, payToScript } from '../socket';
+import { betCreated, betAccepted, notifyAuthor, payToScript, transactionAdded } from '../socket';
 import { fetchWallet } from '../wallet';
 import sanitizeHtml from 'sanitize-html';
 import bitcoin from 'bitcoinjs-lib';
@@ -85,6 +85,7 @@ export function addTransaction(req, res) {
       res.status(500).send(err);
     }
     console.log('wager: ', wager)
+    transactionAdded(wager)
     res.json({ wager: wager });
   })
 }
