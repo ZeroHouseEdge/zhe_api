@@ -16,7 +16,7 @@ export function betCreated(wager) {
 }
 
 export function betAccepted(wagers) {
-   socketio.emit('bet accepted', { wagers: wagers });
+   socketio.emit('bet accepted', {wagers: wagers });
    console.log('emitted betAccepted');
    return;
 }
