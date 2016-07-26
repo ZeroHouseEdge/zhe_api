@@ -1,5 +1,9 @@
 import { fetchWallet } from './wallet';
+import Wager from './models/wager';
 
-fetchWallet(['get_payout_public_key', '__bytes__']).then((results) => {
-   console.log('results: ', results);
+console.log('yoyoyo')
+Wager.findOne({}).exec((err, wager) => {
+   console.log('err: ', err)
+   console.log('wager: ', wager)
 });
+

@@ -12,5 +12,5 @@ const redeemScript = bitcoin.script.multisigOutput(2, pubkeys)
 const scriptPubKey = bitcoin.script.scriptHashOutput(bitcoin.crypto.hash160(redeemScript))
 const address = bitcoin.address.fromOutputScript(scriptPubKey)
 
-console.log(redeemScript.toString('hex'));
-console.log('address: ', address);
+// console.log(redeemScript.toString('hex'));
+// console.log('address: ', address);

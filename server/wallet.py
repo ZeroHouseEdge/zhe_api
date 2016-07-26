@@ -15,12 +15,17 @@ wallet = wallet or Two1Wallet.import_from_mnemonic(mnemonic=wallet_data['master_
 # Loop through methods
 del sys.argv[0]
 result = None
-for arg in sys.argv:
-   calledOn = result or wallet
-   methodToCall = getattr(calledOn, arg)
-   result = methodToCall()
 
-print(json.dumps({ 'data': bytes_to_str(result) }))
+if sys.argv[0] == 'sign':
+   del sys.argv[0]
+   pubkey = sys.argv[0]
+else:
+   for arg in sys.argv:
+      calledOn = result or wallet
+      methodToCall = getattr(calledOn, arg)
+      result = methodToCall()
+
+   print(json.dumps({ 'data': bytes_to_str(result) }))
 
 # pubkeys = [
 #    "0491bba2510912a5bd37da1fb5b1673010e43d2c6d812c514e91bfa9f2eb129e1c183329db55bd868e209aac2fbc02cb33d98fe74bf23f0c235d6126b1d8334f86",
@@ -33,5 +38,3 @@ print(json.dumps({ 'data': bytes_to_str(result) }))
 # redeem_script = Script.build_multisig_redeem(2, serialized_pubkeys)
 
 # print(redeem_script.to_hex())
-
-

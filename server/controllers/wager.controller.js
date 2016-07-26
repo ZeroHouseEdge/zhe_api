@@ -89,3 +89,18 @@ export function addTransaction(req, res) {
     res.json({ wager: wager });
   })
 }
+
+export function signWager(req, res) {
+  Wager.findOne({}, {}, { sort: { 'dateAdded' : -1 } }).exec((err, wager) => {
+    if (err) {
+      console.log('err: ', err);
+      res.status(500).send(err);
+      return;
+    }
+    console.log('server_pubkey: ', wager.server_pubkey);
+    fetchWallet(['sign']).then((results) => {
+      console.log('results: ', results)
+      res.status(200).send(err);
+    })
+  })
+}
