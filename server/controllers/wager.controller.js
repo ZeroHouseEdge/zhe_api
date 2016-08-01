@@ -99,9 +99,8 @@ export function signWager(req, res) {
       res.status(500).send(err);
       return;
     }
-    // console.log('script hex: ', wager.script_hex);
-    // console.log('server_pubkey: ', wager.server_pubkey);
-    fetchWallet(['sign', wager.script_hex, wager.server_pubkey]).then((results) => {
+    const tx_hexs = wager.transactions.map((tx) => { return tx.hex })
+    fetchWallet(['sign', wager.script_hex, wager.server_pubkey, tx_hexs]).then((results) => {
       console.log('results: ', results)
       res.status(200).send(err);
     })
