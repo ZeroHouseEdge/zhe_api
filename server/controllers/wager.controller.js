@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import app from '../index';
 import Wager from '../models/wager';
 import { betCreated, betAccepted, notifyAuthor, payToScript, transactionAdded } from '../socket';
@@ -58,6 +59,7 @@ export function acceptWager(req, res) {
     // ORDER: HOME, AWAY, SERVER
     const script = buildRedeemScript(2, [ req.body.home_pubkey, req.body.away_pubkey, req.body.server_pubkey ])
     const address = getScriptAddress(script)
+    req.body.script_hex = script.toString('hex');
     req.body.script_address = address;
     Wager.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, (err, wager) => {
       if (err) {
@@ -91,14 +93,15 @@ export function addTransaction(req, res) {
 }
 
 export function signWager(req, res) {
-  Wager.findOne({}, {}, { sort: { 'dateAdded' : -1 } }).exec((err, wager) => {
+  Wager.findOne({ _id: mongoose.Types.ObjectId('579a82632eaaae9e77a90752') }).exec((err, wager) => {
     if (err) {
       console.log('err: ', err);
       res.status(500).send(err);
       return;
     }
-    console.log('server_pubkey: ', wager.server_pubkey);
-    fetchWallet(['sign']).then((results) => {
+    // console.log('script hex: ', wager.script_hex);
+    // console.log('server_pubkey: ', wager.server_pubkey);
+    fetchWallet(['sign', wager.script_hex, wager.server_pubkey]).then((results) => {
       console.log('results: ', results)
       res.status(200).send(err);
     })
