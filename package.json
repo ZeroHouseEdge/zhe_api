@@ -21,6 +21,7 @@
     "compression": "^1.5.2",
     "cors": "^2.7.1",
     "express": "^4.13.3",
+    "isomorphic-fetch": "^2.2.1",
     "mongoose": "^4.5.3",
     "python-shell": "^0.4.0",
     "resource-router-middleware": "^0.5.1",

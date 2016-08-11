@@ -5,7 +5,8 @@ import { betCreated, betAccepted, notifyAuthor, payToScript, transactionAdded } 
 import { fetchWallet } from '../wallet';
 import sanitizeHtml from 'sanitize-html';
 import bitcoin from 'bitcoinjs-lib';
-import { buildRedeemScript, getScriptAddress } from '../bitcoin_helper';
+import { buildRedeemScript, getScriptAddress, txData } from '../bitcoin_helper';
+import { getLinescore } from '../mlb';
 
 /**
  * Save a post
@@ -93,16 +94,43 @@ export function addTransaction(req, res) {
 }
 
 export function signWager(req, res) {
-  Wager.findOne({ _id: mongoose.Types.ObjectId('579a82632eaaae9e77a90752') }).exec((err, wager) => {
+  Wager.findOne({ _id: mongoose.Types.ObjectId('579fcdc64634360995a94092') }).exec((err, wager) => {
     if (err) {
       console.log('err: ', err);
       res.status(500).send(err);
       return;
     }
-    const tx_hexs = wager.transactions.map((tx) => { return tx.hex })
-    fetchWallet(['sign', wager.script_hex, wager.server_pubkey, tx_hexs]).then((results) => {
-      console.log('results: ', results)
-      res.status(200).send(err);
+    // const tx_hexs = wager.transactions.map((tx) => { return tx.hex })
+    getLinescore(wager.game_data_directory).then((data) => {
+      console.log('away: ', data.away_team_runs)
+      console.log('home: ', data.home_team_runs)
+      const winner = parseInt(data.away_team_runs) > parseInt(data.home_team_runs) ? wager.away_pubkey : wager.home_pubkey
+      if (data.status !== 'Final') { console.log('game isnt over'); res.status(200).send(err); return; }
+      console.log('winner: ', winner)
+
+      fetchWallet(['sign', winner, wager.server_pubkey]).then((results) => {
+        console.log('results: ', results)
+        const winner_address = results[0].winner_address;
+
+        const output_tx = new bitcoin.TransactionBuilder();
+        Promise.all(wager.transactions.map((tx) => { return txData(tx.tx_id, wager.script_address) }))
+        .then((res) => {
+          var amount = 0;
+          for (var i = 0; i < res.length; i++) {
+            var txObj = res[i];
+            console.log('txObj: ', txObj)
+            output_tx.addInput(txObj.tx_id, txObj.index)
+            amount += parseFloat(txObj.value)
+          }
+          const satoshis = parseFloat(amount) * 100000000
+          output_tx.addOutput(winner_address, satoshis - 5000)
+          console.log('output_tx: ', output_tx)
+        })
+        .catch((err) => {
+           console.log('err: ', err)
+        })
+      })
+
     })
   })
 }
