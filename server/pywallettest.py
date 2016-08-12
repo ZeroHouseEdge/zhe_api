@@ -6,8 +6,9 @@ from os.path import expanduser
 from two1.wallet import Two1Wallet
 from two1.bitcoin.utils import bytes_to_str, hex_str_to_bytes
 from two1.bitcoin.script import Script
-from two1.bitcoin.crypto import HDPublicKey
+from two1.bitcoin.crypto import HDPublicKey, PublicKey
 from two1.bitcoin.txn import Transaction, TransactionInput, TransactionOutput
+from two1.commands.util.currency import Price
 
 with open('{}/.two1/wallet/default_wallet.json'.format(expanduser('~'))) as data_file:
     wallet_data = json.load(data_file)
@@ -15,23 +16,6 @@ with open('{}/.two1/wallet/default_wallet.json'.format(expanduser('~'))) as data
 wallet = None
 wallet = wallet or Two1Wallet.import_from_mnemonic(mnemonic=wallet_data['master_seed'])
 
-pubkeys = []
-pbs = [
-   "0488b21e03756d4a010000000a1a073557135bca6d3d4339e79ce81144c28c7127183231453970cbe2f1007c58030d83af99bc4c53270cbf7fea2b0c53703c14fff09f390244a75af743093d885d",
-   "0488b21e03b6fd816f00000004a315611f9398d02e9a5f022067ca6892fb3cfef4e1cf6c6d9a83c11e530857a702181fddc3a46ce99c479eb83e3b4e52ea8ffb2def7997eeca6dfd424165bbce03",
-   "0488b21e03756d4a010000000a1a073557135bca6d3d4339e79ce81144c28c7127183231453970cbe2f1007c58030d83af99bc4c53270cbf7fea2b0c53703c14fff09f390244a75af743093d885d"
-]
 
-
-# for pb_hex in pbs:
-#    x = HDPublicKey.from_hex(pb_hex)
-#    print(x.address())
-#    pubkeys.append(x)
-pubkey = HDPublicKey.from_hex(pbs[0])
-privkey = wallet.get_private_for_public(pubkey)
-
-# print(base58.)
-# print(pubkeys)
-# script = Script.build_multisig_redeem(2, pubkeys)
-# print(json.dumps({ 'msg': script.address() }))
-
+tx = Transaction.from_hex('0100000002c68419796bced897f39a2ad8926b9dff4f44a0e59eab8ebad176274bf1ac679200000000b400473044022075e212baf2716611249fcca1af85ee0de233b4013b6d122d05df68552dac327f02203d8775a1ed84805c86dc435b70f04a1fa70df597e3f523c12ebf0a802f2a8e7a014c69522102181fddc3a46ce99c479eb83e3b4e52ea8ffb2def7997eeca6dfd424165bbce032103de1e179bf961821b7e83d55ffaef4f56a8701a7b7615f1e3bf28cb5f11720cce2103de1e179bf961821b7e83d55ffaef4f56a8701a7b7615f1e3bf28cb5f11720cce53aeffffffff0f55a97c2228ef81f0105fbae33344468f705d1f9ad7ac1a03bdf40545b975d001000000b5004830450221009a2ab2c92bb9a8224ad3107e260363a9c5f45dcfba48934b736324160788fed9022072b24c3a15a49352a83d3790c9c12cf0064f88bfd317acf77336bfa807c51d5b014c69522102181fddc3a46ce99c479eb83e3b4e52ea8ffb2def7997eeca6dfd424165bbce032103de1e179bf961821b7e83d55ffaef4f56a8701a7b7615f1e3bf28cb5f11720cce2103de1e179bf961821b7e83d55ffaef4f56a8701a7b7615f1e3bf28cb5f11720cce53aeffffffff0162260500000000001976a914934f4f71f8fd0b334f1accd39fef82a0efe6eb1c88ac00000000')
+print(tx.verify_input_signature())
