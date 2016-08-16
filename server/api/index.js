@@ -14,6 +14,7 @@ export default function() {
 	api.get('/wagers/open', WagerController.getOpenWagers);
 	api.post('/wagers', WagerController.createWager);
 	api.put('/wagers/:id', WagerController.acceptWager);
+	api.put('/wagers/:id/update', WagerController.updateWager);
 	api.put('/wagers/:id/transaction', WagerController.addTransaction);
 	api.get('/wagers/:id/sign', WagerController.signWager);
 

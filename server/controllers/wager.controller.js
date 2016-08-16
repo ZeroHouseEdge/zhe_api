@@ -15,14 +15,32 @@ import { getLinescore } from '../mlb';
  * @returns void
  */
 
- function openWagers(done) {
+function openWagers(done) {
   Wager.find({ acceptor_id: null }).sort({ dateAdded: -1 }).exec((err, wagers) => {
     if (err) {
       return done(err, null);
     }
     return done(null, wagers)
   });
- }
+}
+
+export function updateWager(req, res) {
+  console.log('params: ', req.params)
+  console.log('body: ', req.body)
+  const update = {
+    winner_transaction: {
+      tx_id: req.body.tx_id
+    }
+  }
+  console.log('update: ', update)
+  Wager.findOneAndUpdate({ _id: mongoose.Types.ObjectId(req.params.id) }, { $set: { 'winner_transaction.tx_id': req.body.tx_id } }, { new: true }, (err, wager) => {
+    if (err) {
+      res.status(500).send(err);
+    }
+    console.log('wager: ', wager)
+    res.json({ wager: wager })
+  })
+}
 
 export function getUserWagers(req, res) {
   Wager.find({ $or: [ { author_id: req.params.id }, { acceptor_id: req.params.id } ] }).sort({ dateAdded: -1 }).exec((err, wagers) => {
@@ -78,7 +96,6 @@ export function acceptWager(req, res) {
 }
 
 export function addTransaction(req, res) {
-  console.log('req.body: ', req.body)
   Wager.findOneAndUpdate({ _id: req.params.id }, { '$push': { transactions: req.body } }, { new: true }, (err, wager) => {
     if (err) {
       console.log('err: ', err)
@@ -99,30 +116,23 @@ export function signWager(req, res) {
       return;
     }
     getLinescore(wager.game_data_directory).then((data) => {
-      console.log('away: ', data.away_team_runs)
-      console.log('home: ', data.home_team_runs)
       const winner = parseInt(data.away_team_runs) > parseInt(data.home_team_runs) ? wager.away_pubkey : wager.home_pubkey
       if (data.status !== 'Final') { console.log('game isnt over'); res.status(200).send(err); return; }
-      console.log('winner: ', winner)
-      console.log('script: ', wager.script_hex)
-      console.log('txs: ', wager.transactions)
-      console.log('server pubkey: ', wager.server_pubkey)
 
       fetchWallet([ 'sign', winner, wager.script_hex, wager.transactions.map((tx) => { return tx.hex }), wager.server_pubkey ]).then((results) => {
-        console.log('results: ', results)
-        // const payout_hex = results[0].data;
-        // wager.winner_transaction = {
-        //   winner_pubkey: winner,
-        //   hex: payout_hex
-        // }
-        // wager.save().then((err) => {
-        //   if (err) {
-        //     console.log('err: ', err);
-        //     res.status(500).send(err);
-        //     return;
-        //   }
-        //   res.json({ wager: wager });
-        // })
+        const payout_hex = results[0].data;
+        wager.winner_transaction = {
+          winner_pubkey: winner,
+          hex: payout_hex
+        }
+        wager.save().then((err) => {
+          if (err) {
+            console.log('err: ', err);
+            res.status(500).send(err);
+            return;
+          }
+          res.json({ wager: wager });
+        })
       })
     })
   })

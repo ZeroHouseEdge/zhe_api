@@ -64,7 +64,9 @@ if sys.argv[0] == 'sign':
    for i, inp in enumerate(payout_tx.inputs):
       payout_tx.sign_input(i, Transaction.SIG_HASH_ALL, server_privkey, redeem_script)
 
-   print(json.dumps({ 'data': payout_tx.to_hex() }))
+   print(json.dumps({
+      'data': payout_tx.to_hex()
+   }))
 
 elif sys.argv[0] == 'create_script':
    # home and away pubkeys
