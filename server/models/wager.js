@@ -38,7 +38,13 @@ const wagerSchema = new Schema({
     user_id: { type: 'String' },
     tx_id: { type: 'String' },
     hex: { type: 'String' }
-  }]
+  }],
+
+  winner_transaction: {
+    winner_pubkey: { type: 'String' },
+    hex: { type: 'String' },
+    tx_id: { type: 'String' }
+  }
 });
 
 export default mongoose.model('Wager', wagerSchema);

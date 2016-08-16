@@ -71,7 +71,8 @@ elif sys.argv[0] == 'create_script':
    pbs = sys.argv[1].split(',')
 
    # create server pubkey and add it to list
-   server_pubkey = wallet.get_payout_public_key().to_hex()
+   # server_pubkey = wallet.get_payout_public_key().to_hex()
+   server_pubkey = wallet.get_change_public_key().to_hex()
    pbs.append(server_pubkey)
 
    # format pubkeys to bytes

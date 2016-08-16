@@ -91,7 +91,8 @@ export function addTransaction(req, res) {
 }
 
 export function signWager(req, res) {
-  Wager.findOne({ _id: mongoose.Types.ObjectId('57ad4938153bdea645c38245') }).exec((err, wager) => {
+  console.log('id: ', req.params.id)
+  Wager.findOne({ _id: mongoose.Types.ObjectId(req.params.id) }).exec((err, wager) => {
     if (err) {
       console.log('err: ', err);
       res.status(500).send(err);
@@ -103,10 +104,25 @@ export function signWager(req, res) {
       const winner = parseInt(data.away_team_runs) > parseInt(data.home_team_runs) ? wager.away_pubkey : wager.home_pubkey
       if (data.status !== 'Final') { console.log('game isnt over'); res.status(200).send(err); return; }
       console.log('winner: ', winner)
+      console.log('script: ', wager.script_hex)
+      console.log('txs: ', wager.transactions)
+      console.log('server pubkey: ', wager.server_pubkey)
 
       fetchWallet([ 'sign', winner, wager.script_hex, wager.transactions.map((tx) => { return tx.hex }), wager.server_pubkey ]).then((results) => {
         console.log('results: ', results)
-        const payout_hex = results[0].data;
+        // const payout_hex = results[0].data;
+        // wager.winner_transaction = {
+        //   winner_pubkey: winner,
+        //   hex: payout_hex
+        // }
+        // wager.save().then((err) => {
+        //   if (err) {
+        //     console.log('err: ', err);
+        //     res.status(500).send(err);
+        //     return;
+        //   }
+        //   res.json({ wager: wager });
+        // })
       })
     })
   })

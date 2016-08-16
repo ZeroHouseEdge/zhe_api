@@ -2,20 +2,68 @@
 import sys
 import json
 import base58
+import requests
 from os.path import expanduser
+import two1.bitcoin as bitcoin
 from two1.wallet import Two1Wallet
 from two1.bitcoin.utils import bytes_to_str, hex_str_to_bytes
 from two1.bitcoin.script import Script
 from two1.bitcoin.crypto import HDPublicKey, PublicKey
 from two1.bitcoin.txn import Transaction, TransactionInput, TransactionOutput
 from two1.commands.util.currency import Price
+from two1.blockchain.twentyone_provider import TwentyOneProvider
 
 with open('{}/.two1/wallet/default_wallet.json'.format(expanduser('~'))) as data_file:
     wallet_data = json.load(data_file)
 
 wallet = None
 wallet = wallet or Two1Wallet.import_from_mnemonic(mnemonic=wallet_data['master_seed'])
+provider = TwentyOneProvider()
+
+# Collect public keys
+p1_pubkey = wallet.get_payout_public_key()
+p2_pubkey = wallet.get_change_public_key()
+
+# Build multisig redeem script
+public_keys = [p1_pubkey.compressed_bytes, p2_pubkey.compressed_bytes]
+redeem_script = bitcoin.Script.build_multisig_redeem(2, public_keys)
+# Build deposit transaction (pays to the redeem script above)
+# deposit_tx = wallet.build_signed_transaction({redeem_script.address(): 25000}, fees=5000)[0]
+deposit_tx_obj = wallet.send_to(redeem_script.address(), 20000, False, 5000, [])
+deposit_tx = deposit_tx_obj[0]['txn']
+
+print("deposit: {}".format(deposit_tx_obj))
+print("deposit 0: {}".format(deposit_tx_obj[0]))
+print("Deposit hex: {}\n".format(deposit_tx.to_hex()))
+
+# Build payment transaction
+deposit_utxo_index = deposit_tx.output_index_for_address(redeem_script.hash160())
+
+# Build unsigned payment transaction with a placeholder script
+script_sig = bitcoin.Script()
+print("script_sig: {}".format(script_sig))
+print("script_sig type: {}".format(type(script_sig)))
+
+inputs = [bitcoin.TransactionInput(deposit_tx.hash, deposit_utxo_index, script_sig, 0xffffffff)]
+outputs = [bitcoin.TransactionOutput(15000, bitcoin.Script.build_p2pkh(p1_pubkey.hash160()))]
+payment_tx = bitcoin.Transaction(bitcoin.Transaction.DEFAULT_TRANSACTION_VERSION, inputs, outputs, 0x0)
+
+# Sign payment transaction with pubkey 1
+public_key = bitcoin.PublicKey.from_bytes(redeem_script.extract_multisig_redeem_info()['public_keys'][0])
+private_key = wallet.get_private_for_public(public_key)
 
 
-tx = Transaction.from_hex('0100000002c68419796bced897f39a2ad8926b9dff4f44a0e59eab8ebad176274bf1ac679200000000b400473044022075e212baf2716611249fcca1af85ee0de233b4013b6d122d05df68552dac327f02203d8775a1ed84805c86dc435b70f04a1fa70df597e3f523c12ebf0a802f2a8e7a014c69522102181fddc3a46ce99c479eb83e3b4e52ea8ffb2def7997eeca6dfd424165bbce032103de1e179bf961821b7e83d55ffaef4f56a8701a7b7615f1e3bf28cb5f11720cce2103de1e179bf961821b7e83d55ffaef4f56a8701a7b7615f1e3bf28cb5f11720cce53aeffffffff0f55a97c2228ef81f0105fbae33344468f705d1f9ad7ac1a03bdf40545b975d001000000b5004830450221009a2ab2c92bb9a8224ad3107e260363a9c5f45dcfba48934b736324160788fed9022072b24c3a15a49352a83d3790c9c12cf0064f88bfd317acf77336bfa807c51d5b014c69522102181fddc3a46ce99c479eb83e3b4e52ea8ffb2def7997eeca6dfd424165bbce032103de1e179bf961821b7e83d55ffaef4f56a8701a7b7615f1e3bf28cb5f11720cce2103de1e179bf961821b7e83d55ffaef4f56a8701a7b7615f1e3bf28cb5f11720cce53aeffffffff0162260500000000001976a914934f4f71f8fd0b334f1accd39fef82a0efe6eb1c88ac00000000')
-print(tx.verify_input_signature())
+for i, inp in enumerate(payment_tx.inputs):
+   payment_tx.sign_input(i, bitcoin.Transaction.SIG_HASH_ALL, private_key, redeem_script)
+
+# Sign payment transaction with pubkey 2
+public_key = bitcoin.PublicKey.from_bytes(redeem_script.extract_multisig_redeem_info()['public_keys'][1])
+private_key = wallet.get_private_for_public(public_key)
+
+for i, inp in enumerate(payment_tx.inputs):
+   payment_tx.sign_input(i, bitcoin.Transaction.SIG_HASH_ALL, private_key, redeem_script)
+
+print("Payment: {}".format(payment_tx.to_hex()))
+
+txid = provider.broadcast_transaction(payment_tx.to_hex())
+print("txid: {}".format(txid))
