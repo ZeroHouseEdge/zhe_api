@@ -108,7 +108,6 @@ export function addTransaction(req, res) {
 }
 
 export function signWager(req, res) {
-  console.log('id: ', req.params.id)
   Wager.findOne({ _id: mongoose.Types.ObjectId(req.params.id) }).exec((err, wager) => {
     if (err) {
       console.log('err: ', err);

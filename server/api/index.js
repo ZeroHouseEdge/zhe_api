@@ -16,7 +16,7 @@ export default function() {
 	api.put('/wagers/:id', WagerController.acceptWager);
 	api.put('/wagers/:id/update', WagerController.updateWager);
 	api.put('/wagers/:id/transaction', WagerController.addTransaction);
-	api.get('/wagers/:id/sign', WagerController.signWager);
+	api.put('/wagers/:id/sign', WagerController.signWager);
 
 	// perhaps expose some API metadata at the root
 	api.get('/', (req, res) => {
