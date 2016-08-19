@@ -27,13 +27,7 @@ function openWagers(done) {
 export function updateWager(req, res) {
   console.log('params: ', req.params)
   console.log('body: ', req.body)
-  const update = {
-    winner_transaction: {
-      tx_id: req.body.tx_id
-    }
-  }
-  console.log('update: ', update)
-  Wager.findOneAndUpdate({ _id: mongoose.Types.ObjectId(req.params.id) }, { $set: { 'winner_transaction.tx_id': req.body.tx_id } }, { new: true }, (err, wager) => {
+  Wager.findOneAndUpdate({ _id: mongoose.Types.ObjectId(req.params.id) }, { $set: { 'winner_transaction.tx_id': req.body.tx_id, 'winner_transaction.hex': req.body.hex } }, { new: true }, (err, wager) => {
     if (err) {
       res.status(500).send(err);
     }
