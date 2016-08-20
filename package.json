@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "babel-node index.js",
+    "build-css": "node-sass --include-path scss server/scss/main.scss   server/public/css/main.css",
+    "watch-css": "nodemon -e scss -x \"npm run build-css\"",
     "wallet": "babel-node ./server/testwallet.js",
     "bitcoin": "babel-node ./server/bitcointest.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -13,9 +15,8 @@
     "type": "git",
     "url": "git://github.com/developit/express-es6-rest-api.git"
   },
-  "author": "Jason Miller <jason@developit.ca>",
-  "license": "UNLICENSED",
-  "dependencies": {
+  "author": "Jack Mallers",
+    "dependencies": {
     "bitcoinjs-lib": "^2.2.0",
     "body-parser": "^1.13.3",
     "compression": "^1.5.2",
@@ -23,6 +24,8 @@
     "express": "^4.13.3",
     "isomorphic-fetch": "^2.2.1",
     "mongoose": "^4.5.3",
+    "node-sass": "^3.8.0",
+    "nodemon": "^1.10.2",
     "python-shell": "^0.4.0",
     "resource-router-middleware": "^0.5.1",
     "sanitize-html": "^1.12.0",
