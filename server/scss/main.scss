@@ -1,0 +1,32 @@
+// $fa-font-path: '../../node_modules/font-awesome/fonts';
+
+// @import '../../node_modules/font-awesome/scss/font-awesome';
+@import 'global';
+@import 'home';
+
+/* CSS declarations go here */
+body {
+   margin: 0;
+   padding: 0;
+   font-family: "Jigsaw Medium";
+}
+
+a {
+   color: #337ab7;
+}
+
+.container {
+   margin: 0 auto;
+   max-width: 1440px;
+   position: relative;
+   padding: 0 5%;
+   font-size: 100%;
+   vertical-align: baseline;
+   font: inherit;
+}
+
+.clearfix:after {
+   content: "";
+   display: table;
+   clear: both;
+}

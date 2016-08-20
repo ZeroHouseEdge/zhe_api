@@ -43,6 +43,9 @@ db( () => {
    app.get('/', function(req, res) {
        res.sendfile(html_dir + 'home.html');
    });
+   app.get('/faq', function(req, res) {
+       res.sendfile(html_dir + 'faq.html');
+   });
 
    // API Routes
    app.use('/api', api());
