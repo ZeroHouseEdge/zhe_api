@@ -1,0 +1,401 @@
+.button {
+  color: #EFEFEB;
+  padding: 9px 20px;
+  font-size: 16px;
+  text-align: center;
+  display: inline-block;
+  border-radius: 3px;
+  position: relative;
+  cursor: pointer;
+  text-decoration: none;
+  -webkit-appearance: none;
+  transition: all 0.2s linear; }
+  .button.download {
+    width: 60%;
+    padding: 12px 20px;
+    position: relative; }
+    .button.download .mac {
+      position: absolute;
+      top: 22px;
+      left: 22px;
+      font-size: 25px;
+      color: #275d39; }
+    .button.download strong {
+      text-transform: uppercase;
+      display: block;
+      font-size: 20px;
+      font-weight: bold; }
+  .button.green {
+    background: #45A565;
+    border: solid #1f4b2e;
+    border-width: 1px 1px 3px; }
+    .button.green:hover {
+      border: solid #2e6f44;
+      border-width: 1px 1px 3px; }
+  .button.grey {
+    background: #95a5a6;
+    border: solid #566566;
+    border-width: 1px 1px 3px; }
+    .button.grey:hover {
+      border: solid #6d8082;
+      border-width: 1px 1px 3px; }
+
+@media (max-width: 820px) {
+  .hero {
+    min-height: 670px; }
+    .hero .container .value-prop {
+      position: static;
+      top: 10%;
+      text-align: center; }
+      .hero .container .value-prop h1 {
+        max-width: 700px;
+        clear: both;
+        font-size: 26x;
+        margin: 12% auto 20px; }
+    .hero .desktop.screenshot {
+      width: 90%;
+      overflow: hidden; }
+      .hero .desktop.screenshot img {
+        max-width: 1000px;
+        width: 100%;
+        float: none;
+        margin: 0 auto; } }
+
+@media (max-width: 1280px) {
+  .marketing {
+    min-height: 600px; }
+  .hero .value-prop h1 {
+    max-width: 480px;
+    font-size: 30px;
+    margin: 35% auto 20px;
+    padding: 0; }
+  .hero .value-prop h3 {
+    max-width: 480px;
+    margin: 0 auto 30px;
+    padding: 0; }
+  #main .testimonials .testimonial {
+    width: 100%;
+    max-width: 480px;
+    margin-right: 0; }
+  #main .features {
+    max-width: 860px; }
+    #main .features .feature {
+      max-width: 800px;
+      margin: 5% 0 2% calc(10px + 5%);
+      display: block; }
+      #main .features .feature h3 {
+        text-align: left; }
+      #main .features .feature p {
+        text-align: left; }
+  #main #timeline {
+    position: relative;
+    float: left;
+    width: 5px;
+    height: 330px;
+    margin: calc(30px + 5%) 5% 30px 0; }
+    #main #timeline .step#step-1 {
+      left: -13px; }
+    #main #timeline .step#step-2 {
+      top: 50%;
+      margin-top: -15px; }
+    #main #timeline .step#step-3 {
+      top: initial;
+      left: -13px;
+      right: initial;
+      bottom: -15px; } }
+
+@media (max-width: 479px) {
+  #topbar #logo {
+    font-size: 22px;
+    width: 110px; }
+  #topbar .secondary a {
+    display: none; }
+  #topbar .secondary .login {
+    display: inline-block;
+    width: 60%; }
+  .hero .container .value-prop h1 {
+    font-size: 24px;
+    line-height: 30px;
+    margin: 22% auto 16px; }
+  #timeline {
+    display: none; } }
+
+.container {
+  margin: 0 auto;
+  max-width: 1440px;
+  position: relative;
+  padding: 0 5%;
+  font-size: 100%;
+  vertical-align: baseline;
+  font: inherit; }
+
+#topbar {
+  position: absolute;
+  width: 100%;
+  padding: 3% 0 0;
+  z-index: 20;
+  -webkit-font-smoothing: antialiased; }
+  #topbar #logo {
+    font-size: 30px;
+    font-weight: 300;
+    text-align: center;
+    color: #fff;
+    width: 250px;
+    font-family: "ff-ernestine-web-pro", sans-serif;
+    float: left;
+    -webkit-font-smoothing: antialiased;
+    margin-right: 20px; }
+    #topbar #logo a {
+      text-decoration: none;
+      color: #fff; }
+      #topbar #logo a .title-word {
+        display: inline-block; }
+      #topbar #logo a .title-word:first-letter {
+        font-weight: bold; }
+    #topbar #logo .beta {
+      display: block;
+      font-family: 'Open Sans', 'Helvetica Neue', Helvetica;
+      color: #bbb;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-align: right;
+      line-height: 100%; }
+  #topbar .primary {
+    float: left; }
+  #topbar .secondary {
+    float: right;
+    font-size: 16px; }
+    #topbar .secondary a {
+      margin: 0 0 0 15px;
+      color: #D6D8CD;
+      text-decoration: none;
+      display: inline-block; }
+      #topbar .secondary a:hover {
+        color: #f9faf8; }
+    #topbar .secondary .login, #topbar .secondary .signup {
+      display: inline;
+      background: rgba(69, 165, 101, 0.6);
+      color: #fff;
+      text-decoration: none;
+      padding: 8px 10px;
+      border: 1px solid #5EAB78;
+      border-radius: 5px;
+      transition: all 0.2s linear;
+      text-align: center; }
+      #topbar .secondary .login:hover, #topbar .secondary .signup:hover {
+        border: 1px solid #90c5a2; }
+
+.hero {
+  background: #d74444 url("http://jackschess.com/assets/images/marketing/world_background.png") no-repeat;
+  background-size: 100%;
+  color: white;
+  padding: 5% 0 6%;
+  position: relative;
+  overflow: hidden;
+  min-height: 700px;
+  padding-bottom: 0;
+  margin: 0;
+  border: 0;
+  font-size: 100%;
+  vertical-align: baseline; }
+  .hero .value-prop {
+    position: absolute;
+    z-index: 10;
+    font-family: "proxima-nova", Helvetica,Arial,sans-serif; }
+    .hero .value-prop h1 {
+      font-size: 35px;
+      line-height: 38px;
+      margin: 40% 0 20px;
+      max-width: 700px;
+      clear: both;
+      font-weight: 600;
+      margin-bottom: 0; }
+    .hero .value-prop h2 {
+      font-weight: 300;
+      font-style: italic;
+      margin: 5px 0 35px 0; }
+    .hero .value-prop h3 {
+      font-size: 20px;
+      line-height: 26px;
+      max-width: 580px;
+      margin: 0 0 30px;
+      -webkit-font-smoothing: antialiased;
+      font-weight: 300; }
+  .hero .desktop {
+    width: 100%;
+    margin-top: 6%;
+    position: absolute; }
+    .hero .desktop img {
+      max-width: 1100px;
+      width: 73%;
+      display: block;
+      float: right;
+      margin: 0 -220px -180px;
+      box-shadow: 0 3px 15px rgba(0, 0, 0, 0.5); }
+
+#main {
+  font-family: proxima-nova, Helvetica, Arial, sans-serif;
+  background: #fff; }
+  #main .bar {
+    background: #384046;
+    width: 100%;
+    min-height: 100px;
+    margin-bottom: 5%; }
+  #main h2 {
+    text-align: center;
+    font-size: 30px;
+    line-height: 36px;
+    margin: 0 0 3%;
+    color: #384046;
+    clear: both;
+    font-size: 30px;
+    font-weight: 300; }
+  #main p {
+    max-width: 860px;
+    margin: auto;
+    line-height: 150%;
+    font-size: 18px;
+    color: #7D8990;
+    -webkit-font-smoothing: antialiased; }
+  #main .features {
+    text-align: center; }
+    #main .features .screenshot {
+      margin-top: 20px;
+      overflow-y: hidden; }
+      #main .features .screenshot img {
+        max-width: 1000px;
+        margin: 0 auto -12%; }
+    #main .features #timeline {
+      position: relative;
+      width: 680px;
+      height: 5px;
+      background-color: #d74444;
+      margin: 60px auto 10px; }
+      #main .features #timeline .step {
+        position: absolute;
+        width: 30px;
+        line-height: 30px;
+        text-align: center;
+        font-weight: bold;
+        color: #fff;
+        top: -15px;
+        background-color: #d74444;
+        -webkit-border-radius: 15px;
+        -moz-border-radius: 15px;
+        border-radius: 15px; }
+      #main .features #timeline #step-1 {
+        left: -15px; }
+      #main .features #timeline #step-2 {
+        left: 50%;
+        margin-left: -15px; }
+      #main .features #timeline #step-3 {
+        right: -15px; }
+    #main .features .feature {
+      max-width: 300px;
+      margin: 4% 2% 0;
+      display: inline-block;
+      text-align: left;
+      vertical-align: top; }
+      #main .features .feature h3 {
+        text-align: center;
+        font-size: 18px;
+        line-height: 26px;
+        margin: 0 auto 15px;
+        -webkit-font-smoothing: antialiased;
+        text-transform: uppercase; }
+      #main .features .feature p {
+        text-align: left; }
+
+.faq-header {
+  text-align: center;
+  padding: 5%;
+  background: #0c7cd5 url("/assets/images/marketing/world_background.png") no-repeat;
+  background-size: 100%;
+  color: #EFEFEB;
+  padding: 5% 0 6%;
+  position: relative;
+  overflow: hidden; }
+  .faq-header h1 {
+    margin: 50px auto 15px;
+    color: #fff;
+    font-size: 32px;
+    line-height: 38px;
+    max-width: 700px;
+    clear: both;
+    font-weight: 300; }
+
+.faq #main {
+  background: #fff;
+  padding: 5% 0 3%; }
+  .faq #main .table-of-contents {
+    margin: 0 0 3%; }
+    .faq #main .table-of-contents h3 {
+      margin: 1em auto;
+      max-width: 860px;
+      text-align: left;
+      font-size: 24px;
+      line-height: 30px;
+      color: #384046;
+      clear: both;
+      font-weight: 300; }
+    .faq #main .table-of-contents ul {
+      max-width: 860px;
+      margin: 0 auto; }
+      .faq #main .table-of-contents ul li {
+        text-indent: -15px;
+        margin-left: 15px;
+        line-height: 150%;
+        font-size: 18px;
+        color: #7D8990;
+        -webkit-font-smoothing: antialiased;
+        list-style-type: none; }
+        .faq #main .table-of-contents ul li a {
+          color: #0c7cd5;
+          -webkit-font-smoothing: antialiased;
+          font-size: 100%; }
+  .faq #main .qna {
+    margin: 0 0 1%; }
+    .faq #main .qna h3 {
+      margin: 1em auto;
+      max-width: 860px;
+      text-align: left;
+      position: relative;
+      font-size: 24px;
+      line-height: 30px;
+      color: #384046;
+      clear: both; }
+      .faq #main .qna h3 a {
+        color: #0c7cd5;
+        -webkit-font-smoothing: antialiased; }
+        .faq #main .qna h3 a i {
+          opacity: 0;
+          position: absolute;
+          left: -1.25em;
+          padding-right: 1em;
+          line-height: 1.25em; }
+    .faq #main .qna p {
+      margin-bottom: 1em; }
+
+/* CSS declarations go here */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Jigsaw Medium"; }
+
+a {
+  color: #337ab7; }
+
+.container {
+  margin: 0 auto;
+  max-width: 1440px;
+  position: relative;
+  padding: 0 5%;
+  font-size: 100%;
+  vertical-align: baseline;
+  font: inherit; }
+
+.clearfix:after {
+  content: "";
+  display: table;
+  clear: both; }
